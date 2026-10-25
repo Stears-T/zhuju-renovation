@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>筑居 · 装修设计助手原型</title>
+<style>
+:root{--bg:#f5f4ef;--paper:#fff;--ink:#20251f;--muted:#72796f;--line:#e5e5dc;--green:#315c45;--green2:#e9f0e9;--amber:#9b6324;--amberbg:#fff4e3;--red:#a64a3f;--redbg:#fff0ed;--shadow:0 14px 40px rgba(29,43,31,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.6}
+header{background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.nav{max-width:1180px;margin:auto;padding:15px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:19px;letter-spacing:.2px}.logo{width:37px;height:37px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:21px}
+.pill{font-size:12px;color:var(--green);background:var(--green2);border-radius:999px;padding:5px 10px;white-space:nowrap}
+main{max-width:1180px;margin:32px auto 70px;padding:0 24px}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:25px;align-items:stretch;margin-bottom:24px}
+.hero-copy,.hero-card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.hero-copy{padding:32px 34px}.eyebrow{color:var(--green);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+h1{font-size:clamp(28px,4vw,43px);line-height:1.18;letter-spacing:-1px;margin:12px 0 13px}.intro{color:var(--muted);max-width:620px;margin:0}
+.hero-card{padding:24px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#f8fbf7,#edf3eb)}
+.blueprint{height:112px;border:1px solid #cbd8ca;border-radius:13px;background-color:#f8fbf6;background-image:linear-gradient(#dce6dc 1px,transparent 1px),linear-gradient(90deg,#dce6dc 1px,transparent 1px);background-size:18px 18px;position:relative;overflow:hidden;margin:14px 0}
+.room{position:absolute;border:2px solid #41634e;background:rgba(224,237,222,.5)}.r1{left:10%;top:15%;width:44%;height:65%}.r2{left:54%;top:15%;width:33%;height:31%}.r3{left:54%;top:46%;width:33%;height:34%}.door{position:absolute;width:23px;height:2px;background:#b87543;left:52%;top:46%;transform:rotate(38deg)}
+.card-label{font-size:12px;color:var(--muted)}.card-title{font-size:19px;font-weight:750;margin-top:3px}
+.layout{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:24px;align-items:start}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{padding:22px 24px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-head h2{font-size:19px;margin:0}.step{font-size:12px;color:var(--muted)}
+.panel-body{padding:22px 24px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);border:1px solid #d9ddd4;border-radius:10px;background:#fff;padding:11px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#71917b;box-shadow:0 0 0 3px rgba(49,92,69,.1)}
+textarea{min-height:94px;resize:vertical}
+.field{margin-bottom:17px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.help{font-size:12px;color:var(--muted);margin-top:5px}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:700;transition:transform .15s,background .15s}
+button:active{transform:translateY(1px)}.primary{background:var(--green);color:#fff}.primary:hover{background:#254b37}.secondary{background:#f0f1eb;color:#3e493e;border:1px solid var(--line)}.text-btn{padding:5px 0;background:none;color:var(--green);font-size:13px}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:21px}.actions .primary{flex:1;min-width:150px}
+.notice{padding:12px 14px;border-radius:12px;background:#f5f5ef;color:#61695f;font-size:12px;margin-top:17px;border:1px solid var(--line)}
+.notice strong{color:#3c483d}
+.results{position:sticky;top:88px}.results .panel-body{padding:18px}
+.empty{padding:25px 18px;text-align:center;border:1px dashed #d9ddd3;border-radius:15px;color:var(--muted)}
+.empty-icon{font-size:29px;margin-bottom:7px}.empty strong{display:block;color:var(--ink);margin-bottom:5px}
+.result-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}.result-top h3{margin:0;font-size:17px}.tag{font-size:11px;background:var(--amberbg);color:var(--amber);padding:5px 8px;border-radius:999px;white-space:nowrap}
+.result-section{border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin-bottom:11px}
+.result-section h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}.result-section ul{padding-left:19px;margin:0;color:#50584f;font-size:13px}.result-section li{margin:5px 0}
+.result-section.conflict{background:#fffaf5;border-color:#f0e2cf}.result-section.conflict .dot{background:#bd7a35}
+.result-section.question{background:#f7faf6}.result-section p{margin:0;font-size:13px;color:#50584f}
+.result-foot{font-size:11px;color:var(--muted);padding:7px 3px 2px}
+footer{max-width:1180px;margin:0 auto;padding:0 24px 35px;color:var(--muted);font-size:12px}
+.toast{display:none;position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:11px 16px;border-radius:12px;background:#26382c;color:white;box-shadow:var(--shadow);z-index:10;font-size:13px}
+@media(max-width:850px){.hero,.layout{grid-template-columns:1fr}.results{position:static}.hero-card{min-height:200px}.nav{padding:13px 16px}main{padding:0 14px;margin-top:18px}.hero-copy{padding:25px}.panel-body{padding:18px}.panel-head{padding:18px}.pill{display:none}}
+@media(max-width:480px){.grid2{grid-template-columns:1fr;gap:0}.actions{align-items:stretch}.actions button{width:100%}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand"><div class="logo">筑</div><span>筑居 · 装修设计助手</span></div><span class="pill">本地网页原型 · 无需登录</span></div></header>
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">HOME DESIGN WORKSPACE</div>
+    <h1>让每一寸空间，<br>都有清晰的安排。</h1>
+    <p class="intro">先把户型、尺寸和生活需求整理清楚，再逐项检查家具摆放、门扇开启和通行空间。这个原型会根据你填写的内容生成一份结构化检查清单。</p>
+  </div>
+  <div class="hero-card">
+    <div><div class="card-label">空间规划 · 预览示意</div><div class="card-title">从尺寸出发，逐步做决定</div></div>
+    <div class="blueprint"><div class="room r1"></div><div class="room r2"></div><div class="room r3"></div><div class="door"></div></div>
+    <div class="card-label">提示：示意图仅作装饰，不代表你的真实户型。</div>
+  </div>
+</section>
+<section class="layout">
+<div class="panel">
+  <div class="panel-head"><h2>填写你的装修需求</h2><span class="step">01 / 输入信息</span></div>
+  <div class="panel-body">
+    <form id="designForm">
+      <div class="field"><label for="project">项目 / 房间名称</label><input id="project" placeholder="例如：主卧、衣帽间与主卫" value="主卧、衣帽间与主卫"></div>
+      <div class="grid2">
+        <div class="field"><label for="roomWidth">房间宽度（mm）</label><input id="roomWidth" type="number" min="1" placeholder="例如：3600"></div>
+        <div class="field"><label for="roomLength">房间长度（mm）</label><input id="roomLength" type="number" min="1" placeholder="例如：4200"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="doorWidth">门洞净宽（mm）</label><input id="doorWidth" type="number" min="1" placeholder="例如：700"></div>
+        <div class="field"><label for="doorType">门的形式</label><select id="doorType"><option value="">请选择</option><option>平开门</option><option>推拉门</option><option>折叠门</option><option>尚未确定</option></select></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="cabinetDepth">衣柜深度（mm）</label><input id="cabinetDepth" type="number" min="1" placeholder="例如：600"></div>
+        <div class="field"><label for="passage">期望通道宽度（mm）</label><input id="passage" type="number" min="1" placeholder="例如：800"></div>
+      </div>
+      <div class="field"><label for="layout">户型与相邻关系</label><textarea id="layout" placeholder="例如：衣柜紧邻主卫门洞；墙体是否能拆改尚不确定；门打开时可能靠近柜门。"></textarea></div>
+      <div class="field"><label for="needs">生活需求与特别要求</label><textarea id="needs" placeholder="例如：衣柜是左右平开门；希望进出主卫方便；尽量不影响柜门打开；不确定时请列出需要现场核实的尺寸。"></textarea></div>
+      <div class="actions"><button class="primary" type="submit">开始整理与检查　→</button><button class="secondary" type="button" id="exampleBtn">填入示例</button><button class="text-btn" type="button" id="clearBtn">清空</button></div>
+      <div class="notice"><strong>原型说明：</strong>当前版本不连接外部 AI。它会依据你填写的字段和基础规则整理检查清单，不会冒充真实 AI 设计结论。正式施工前请以现场复尺及专业人员确认结果为准。</div>
+    </form>
+  </div>
+</div>
+<div class="panel results">
+  <div class="panel-head"><h2>检查结果</h2><span class="step">02 / 方案梳理</span></div>
+  <div class="panel-body" id="results">
+    <div class="empty"><div class="empty-icon">⌂</div><strong>你的空间方案将在这里整理</strong>先填写左侧信息，再点击「开始整理与检查」。<br>缺少的尺寸会被列为待确认事项。</div>
+  </div>
+</div>
+</section>
+</main>
+<footer>筑居原型 · 仅用于早期规划与信息整理。尺寸建议不是建筑、结构、消防或施工审批意见。</footer>
+<div class="toast" id="toast"></div>
+<script>
+const $ = id => document.getElementById(id);
+function val(id){return $(id).value.trim()}
+function addUnique(arr, text){if(text && !arr.includes(text))arr.push(text)}
+function renderList(items){return '<ul>'+items.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul>'}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function section(title,items,cls=''){return '<div class="result-section '+cls+'"><h4><span class="dot"></span>'+title+'</h4>'+renderList(items)+'</div>'}
+function runAnalysis(){
+ const project=val('project')||'未命名空间',w=Number(val('roomWidth')),l=Number(val('roomLength')),door=Number(val('doorWidth')),cab=Number(val('cabinetDepth')),pass=Number(val('passage')),type=val('doorType'),layout=val('layout'),needs=val('needs');
+ const known=[],advice=[],conflicts=[],questions=[];
+ if(w&&l){known.push('已记录空间尺寸：宽 '+w+' mm × 长 '+l+' mm；平面净尺寸与墙体完成面尺寸仍需确认。')}
+ else addUnique(questions,'补充房间宽度和长度，并注明测量位置（毛坯墙、完成面或家具可用净尺寸）。');
+ if(door){known.push('门洞净宽填写为 '+door+' mm。')}else addUnique(questions,'补充门洞净宽、门洞高度，以及门套完成后的实际净尺寸。');
+ if(type){known.push('门的形式当前选择为：'+type+'。')}else addUnique(questions,'确认门的形式，并核对门扇厚度、门套、把手及五金所占空间。');
+ if(cab){known.push('衣柜深度填写为 '+cab+' mm。')}else addUnique(questions,'补充衣柜柜体深度、柜门厚度和柜门打开后的占用空间。');
+ if(pass){known.push('期望通道宽度填写为 '+pass+' mm。')}else addUnique(questions,'明确通道宽度的测量起止点，并检查它是在柜门关闭还是打开时测量。');
+ if(layout)known.push('相邻关系/现场条件：'+layout);
+ if(needs)known.push('生活需求：'+needs);
+ if(w&&l)advice.push('在平面图上标出门洞、墙体、衣柜外轮廓和主要家具；所有尺寸统一用毫米，并注明尺寸是净尺寸还是结构尺寸。');
+ if(door&&type==='平开门'){advice.push('平开门需画出门扇完整开启弧线，并检查门把手、门套与衣柜柜门、抽屉及通道是否互相干涉。')}
+ if(door&&type==='推拉门'){advice.push('推拉门需核对门扇重叠量、轨道/门套厚度、收口条件和开启后净通行宽度；确认墙体侧有足够的门扇停靠空间。')}
+ if(cab){advice.push('将衣柜柜体深度与柜门打开后的额外空间分开标注；若衣柜为平开柜门，需按柜门实际宽度画出开启范围。')}
+ if(pass){advice.push('在最窄位置测量实际通道，并分别检查门扇打开、衣柜门打开、两者同时打开时的剩余宽度。')}
+ if(!advice.length)advice.push('先补充空间尺寸和主要家具尺寸，再开始比较布局。建议从平面俯视图开始，而不是只凭效果图判断。');
+ if(door&&door<700)conflicts.push('门洞净宽低于 700 mm：请结合门的用途、门扇/门套占用和当地适用规范核实是否满足通行需求；不要仅凭这个数值直接判定合格或不合格。');
+ if(door&&door>=700&&door<800)conflicts.push('门洞净宽为 '+door+' mm：需要核实门套安装后实际净宽、门扇开启后的有效通行宽度，以及使用者的通行需求。');
+ if(cab&&cab<500)conflicts.push('衣柜深度 '+cab+' mm 可能限制部分衣物的悬挂或收纳方式；请根据衣物方向、柜体内部结构和五金规格核实。');
+ if(pass&&pass<800)conflicts.push('期望通道宽度 '+pass+' mm：建议重点复核家具/柜门开启后的最窄处。该提醒不是通用规范判定，实际要求需结合场景和当地规定。');
+ if(type==='平开门'&&cab&&door&&cab+door>0)conflicts.push('平开门与邻近衣柜可能存在开启范围冲突。请在平面图上同时画出卫浴门扇和衣柜柜门的开启轨迹，尤其检查两扇门同时打开时是否碰撞。');
+ if(layout&&/墙体|承重|拆改|不确定/.test(layout))conflicts.push('你提到墙体或现场条件尚不确定：拆改前必须核实墙体性质、管线和防水等条件，不要仅凭户型图判断可拆。');
+ if(!conflicts.length)conflicts.push('目前填写的信息不足以发现明确的尺寸冲突；这不代表方案已经确认无冲突。请补充带尺寸的平面图，并逐项核对门扇、柜门和通道。');
+ if(!questions.length)questions.push('确认所有尺寸是否为现场复尺的净尺寸，并补充门扇宽度、门套厚度及柜门开启尺寸。');
+ questions.push('现场是否有踢脚线、门套、开关插座、管道、地漏或其他会影响布局的构件？');
+ questions.push('希望优先保证哪一项：通行舒适、收纳容量、门的开启便利，还是施工改动最少？');
+ const html='<div class="result-top"><div><h3>'+escapeHtml(project)+' · 初步检查</h3><div class="card-label">根据当前输入生成 · 非 AI 专业结论</div></div><span class="tag">原型规则检查</span></div>'
+ +section('已知条件',known.length?known:['尚未填写足够信息。'])
+ +section('方案建议',advice)
+ +section('潜在冲突',conflicts,'conflict')
+ +section('待确认问题',questions,'question')
+ +'<div class="result-foot">本结果是按输入内容触发的基础规则清单，不是专业测量、规范审查或真实 AI 推理。修改左侧数据后可重新生成。</div>';
+ $('results').innerHTML=html;
+ $('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+$('designForm').addEventListener('submit',e=>{e.preventDefault();runAnalysis();});
+$('exampleBtn').addEventListener('click',()=>{
+ $('project').value='主卧、衣帽间与主卫';
+ $('roomWidth').value='3600';$('roomLength').value='4200';$('doorWidth').value='700';$('doorType').value='平开门';$('cabinetDepth').value='600';$('passage').value='800';
+ $('layout').value='衣柜紧邻主卫门洞；墙体性质尚未确认；门打开时可能靠近衣柜柜门。';
+ $('needs').value='衣柜是左右平开柜门；希望进出主卫方便；尽量避免卫浴门和柜门互相碰撞。';
+ showToast('已填入示例数据，点击“开始整理与检查”查看结果。');
+});
+$('clearBtn').addEventListener('click',()=>{$('designForm').reset();$('results').innerHTML='<div class="empty"><div class="empty-icon">⌂</div><strong>你的空间方案将在这里整理</strong>先填写左侧信息，再点击「开始整理与检查」。<br>缺少的尺寸会被列为待确认事项。</div>';});
+function showToast(t){const el=$('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',2600)}
+</script>
+</body>
+</html>
